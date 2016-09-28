@@ -11,4 +11,4 @@ To build the project on Windows (Windows 10 – 64-bit) please install the follo
 3.  Qt Creator (Visual Studio 2013 version) – Download from https://download.qt.io/official_releases/qt/5.5/5.5.1/qt-opensource-windows-x86-msvc2013_64-5.5.1.exe.mirrorlist
 
 
-![alt tag](/documentation/screenshot.png)
+![alt tag](https://github.com/pranjal23/OBJ_HalfEdge/blob/master/documentation/sceenshot.png?raw=true)
