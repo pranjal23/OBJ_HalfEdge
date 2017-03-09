@@ -322,6 +322,7 @@ PolygonMesh* OBJFileParser::parseFile(QString fileName){
     QMap<quint64,PolygonMesh::HE_face*>::iterator iv = faceMap->begin();
     while (iv != faceMap->end()) {
         iv.value()->normal = calculateFaceNormal(iv.value());
+        iv.value()->centroid = calculateFaceCentroid(iv.value());
         ++iv;
     }
 
@@ -372,7 +373,24 @@ void OBJFileParser::scaleAndMoveToOrigin(
         QVector3D transV,
         QVector3D* vertV)
 {
-    /*Apply translation and scale to the point*/
+
+    //Convert to left hand coordinate system for unity
+    QVector3D ov(vertV->x(),vertV->y(),vertV->z());
+    QMatrix4x4 A(1.0,        0.0,        0.0,        0,
+                 0.0,        1.0,        0.0,        0,
+                 0.0,        0.0,        -1.0,        0,
+                 0.0,        0.0,        0.0,        1.0);
+    A.rotate(180,0.0,1.0,0.0);
+
+    QVector3D fv = A * ov;
+
+    vertV->setX(fv.x());
+    vertV->setY(fv.y());
+    vertV->setZ(fv.z());
+    return;
+
+    /*
+    //Apply translation and scale to the point
 
     QMatrix4x4 A(1.0,        0.0,        0.0,        transV.x(),
                  0.0,        1.0,        0.0,        transV.y(),
@@ -397,6 +415,7 @@ void OBJFileParser::scaleAndMoveToOrigin(
 
     if(showDebug)
         qDebug() << "transformed: " << fv.x() << ","  << fv.y() << ","  << fv.z();
+    */
 }
 
 /**
@@ -427,6 +446,26 @@ PolygonMesh::Normal* OBJFileParser::calculateFaceNormal(PolygonMesh::HE_face* fa
 
     return normal;
 }
+
+/**
+ * @brief calculateFaceCentroid
+ * @param TriangleMesh::HE_face
+ * @return TriangleMesh::HE_vert
+ */
+PolygonMesh::HE_vert* OBJFileParser::calculateFaceCentroid(PolygonMesh::HE_face* face)
+{
+    PolygonMesh::HE_vert* p1 = face->edge->vert;
+    PolygonMesh::HE_vert* p2 = face->edge->next->vert;
+    PolygonMesh::HE_vert* p3 = face->edge->prev->vert;
+
+    PolygonMesh::HE_vert* centroid = new PolygonMesh::HE_vert();
+    centroid->x = (p3->x + p2->x + p1->x)/3;
+    centroid->y = (p3->y + p2->y + p1->y)/3;
+    centroid->z = (p3->z + p2->z + p1->z)/3;
+
+    return centroid;
+}
+
 
 /**
  * @brief calculateVertexNormal

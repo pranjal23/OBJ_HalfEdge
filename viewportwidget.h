@@ -44,6 +44,7 @@ public:
     void setRenderType(RENDER_TYPE type);
     void setAxisHeight(float height);
     void setLightPosition(float position);
+    void savePathPointsToJson(QString fileName);
 
 protected:
     void initializeGL();

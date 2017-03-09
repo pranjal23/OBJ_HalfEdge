@@ -17,6 +17,7 @@ public:
                               QVector3D transV,
                               QVector3D* vertV);
     PolygonMesh::Normal* calculateFaceNormal(PolygonMesh::HE_face* face);
+    PolygonMesh::HE_vert* calculateFaceCentroid(PolygonMesh::HE_face* face);
     PolygonMesh::Normal* calculateVertexNormal(QList<PolygonMesh::HE_face*> faces);
 };
 

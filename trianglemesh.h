@@ -42,6 +42,7 @@ public:
         long index;
         HE_edge* edge;
         Normal* normal;
+        HE_vert* centroid;
     };
     HE_vert* first_vertex;
     std::vector<HE_edge>* edgeVector;

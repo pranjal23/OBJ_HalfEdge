@@ -39,6 +39,7 @@ private:
     ParseWorker mParseWorker;
     void createActions();
     void createMenus();
+    void saveJson();
     bool use_multi_threading;
 
 public slots:
@@ -64,6 +65,8 @@ private slots:
     void on_axisLengthSlider_sliderMoved(int value);
 
     void on_lightSlider_sliderMoved(int position);
+
+    void on_pushButton_clicked();
 
 signals:
     void startParsing();

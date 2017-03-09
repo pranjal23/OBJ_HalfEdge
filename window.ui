@@ -95,7 +95,7 @@
          <property name="geometry">
           <rect>
            <x>30</x>
-           <y>320</y>
+           <y>270</y>
            <width>191</width>
            <height>141</height>
           </rect>
@@ -199,7 +199,7 @@
          <property name="geometry">
           <rect>
            <x>30</x>
-           <y>170</y>
+           <y>120</y>
            <width>191</width>
            <height>151</height>
           </rect>
@@ -323,9 +323,9 @@
          <property name="geometry">
           <rect>
            <x>30</x>
-           <y>20</y>
+           <y>10</y>
            <width>191</width>
-           <height>151</height>
+           <height>111</height>
           </rect>
          </property>
          <property name="autoFillBackground">
@@ -338,7 +338,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>30</y>
+            <y>20</y>
             <width>100</width>
             <height>20</height>
            </rect>
@@ -351,7 +351,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>60</y>
+            <y>40</y>
             <width>100</width>
             <height>20</height>
            </rect>
@@ -364,7 +364,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>90</y>
+            <y>60</y>
             <width>100</width>
             <height>20</height>
            </rect>
@@ -377,7 +377,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>120</y>
+            <y>80</y>
             <width>121</width>
             <height>20</height>
            </rect>
@@ -394,9 +394,9 @@
          <property name="geometry">
           <rect>
            <x>30</x>
-           <y>460</y>
+           <y>410</y>
            <width>191</width>
-           <height>171</height>
+           <height>161</height>
           </rect>
          </property>
          <property name="autoFillBackground">
@@ -449,7 +449,7 @@
             <x>0</x>
             <y>80</y>
             <width>191</width>
-            <height>91</height>
+            <height>81</height>
            </rect>
           </property>
           <property name="title">
@@ -459,7 +459,7 @@
            <property name="geometry">
             <rect>
              <x>40</x>
-             <y>20</y>
+             <y>10</y>
              <width>113</width>
              <height>32</height>
             </rect>
@@ -478,7 +478,7 @@
            <property name="geometry">
             <rect>
              <x>20</x>
-             <y>60</y>
+             <y>50</y>
              <width>160</width>
              <height>22</height>
             </rect>
@@ -500,6 +500,19 @@
            </property>
           </widget>
          </widget>
+        </widget>
+        <widget class="QPushButton" name="pushButton">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>590</y>
+           <width>91</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Save centroids</string>
+         </property>
         </widget>
        </widget>
       </item>

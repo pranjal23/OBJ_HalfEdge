@@ -735,3 +735,49 @@ QVector3D ViewPortWidget::getLookAtVector()
 
     return lookAtV;
 }
+
+class SaveThread : public QThread
+{
+public:
+    SaveThread(QSharedPointer<PolygonMesh> mesh, QString f_name){
+        sFileName = f_name;
+        sOutMesh = mesh;
+    }
+
+private:
+    void run()
+    {
+        QJsonObject path_points_obj;
+        QJsonArray path_points;
+        qDebug() << "Save started";
+        std::vector<PolygonMesh::HE_edge>::iterator iv = sOutMesh.data()->edgeVector->begin();
+        while (iv != sOutMesh.data()->edgeVector->end()) {
+            QJsonObject obj;
+            obj["x"] = iv->face->centroid->x;
+            obj["y"] = iv->face->centroid->y;
+            obj["z"] = iv->face->centroid->z;
+            path_points.append(obj);
+            ++iv;
+            //qDebug() << "Adding points-> " << obj["x"] << " " << obj["y"] << " " << obj["z"];
+        }
+
+        qDebug() << "Writing json";
+
+        path_points_obj["pedestrian_path_points"] = path_points;
+        QByteArray b = QJsonDocument(path_points_obj).toJson(QJsonDocument::Indented);
+
+        QFile file(sFileName);
+        file.open(QIODevice::WriteOnly);
+        file.write(b);
+        file.close();
+        qDebug() << "Save Complete";
+    }
+    QString sFileName;
+    QSharedPointer<PolygonMesh> sOutMesh;
+};
+
+void ViewPortWidget::savePathPointsToJson(QString f_name){
+    QSharedPointer<PolygonMesh> mesh = QSharedPointer<PolygonMesh>(triangleMesh);
+    SaveThread* t = new SaveThread(mesh, f_name);
+    t->start();
+}

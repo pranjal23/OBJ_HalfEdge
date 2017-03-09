@@ -242,3 +242,25 @@ void Window::on_lightSlider_sliderMoved(int position)
     float z_position = position/2.0f;
     ui->viewPortWidget->setLightPosition(z_position);
 }
+
+void Window::on_pushButton_clicked()
+{
+    saveJson();
+}
+
+void Window::saveJson(){
+    QString outFileName = QFileDialog::getSaveFileName(
+                this,
+                tr("Save Path Points"),
+                QDir::homePath(),
+                tr("JSON (*.json)") );
+    if( !outFileName.isEmpty() )
+    {
+        if(!outFileName.endsWith(".json"))
+        {
+            outFileName.append(".json");
+        }
+
+        ui->viewPortWidget->savePathPointsToJson(outFileName);
+    }
+}
