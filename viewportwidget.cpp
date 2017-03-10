@@ -107,7 +107,7 @@ void ViewPortWidget::paintGL()
 {
     glMatrixMode(GL_MODELVIEW);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();    
+    glLoadIdentity();
     glTranslatef(0.0f, 0.0f, 0.0f);
     glTranslatef(eyeX, eyeY, eyeZ);
     draw();
@@ -297,11 +297,11 @@ void ViewPortWidget::drawFace(PolygonMesh::HE_edge* edge){
             curr_edge = curr_edge->next;
         }
 
-       glEnd();
+        glEnd();
     }
 
     if (edge->pair == NULL) {
-         if(showDebug)
+        if(showDebug)
             qDebug() << "      Current's' pair is null" << QString::number(edge->index);
     }
 }
@@ -753,9 +753,16 @@ private:
         std::vector<PolygonMesh::HE_edge>::iterator iv = sOutMesh.data()->edgeVector->begin();
         while (iv != sOutMesh.data()->edgeVector->end()) {
             QJsonObject obj;
+            obj["index"] = iv->face->index;
             obj["x"] = iv->face->centroid->x;
             obj["y"] = iv->face->centroid->y;
             obj["z"] = iv->face->centroid->z;
+
+            QJsonArray link_list;
+            PolygonMesh::HE_edge* edge = &(*iv);
+            get_linked_faces(edge,&link_list);
+            obj["linked_indexes"] = link_list;
+
             path_points.append(obj);
             ++iv;
             //qDebug() << "Adding points-> " << obj["x"] << " " << obj["y"] << " " << obj["z"];
@@ -772,9 +779,45 @@ private:
         file.close();
         qDebug() << "Save Complete";
     }
+
+    void get_linked_faces(PolygonMesh::HE_edge* edge, QJsonArray* link_list){
+
+        long currentIndex = edge->face->index;
+
+        PolygonMesh::HE_edge* outgoing_he=nullptr;
+        PolygonMesh::HE_edge* curr = edge;
+
+        int count=0;
+        while(curr!=outgoing_he)
+        {
+            if(count>2) //Only supports triangle geometry
+                break;
+            count++;
+
+            if(outgoing_he==nullptr)
+                outgoing_he = curr;
+
+            //qDebug() << "Current edge index -> " << curr->index;
+
+            if (curr->pair != NULL)
+            {
+                QJsonObject link;
+                const long end_index  = curr->pair->face->index;
+                link["start_index"] = currentIndex;
+                link["end_index"] = end_index;
+
+                link_list->append(link);
+                qDebug() << "adding link: " << currentIndex << " -> " << end_index;
+            }
+            curr = curr->prev;
+        }
+    }
+
     QString sFileName;
     QSharedPointer<PolygonMesh> sOutMesh;
 };
+
+
 
 void ViewPortWidget::savePathPointsToJson(QString f_name){
     QSharedPointer<PolygonMesh> mesh = QSharedPointer<PolygonMesh>(triangleMesh);
